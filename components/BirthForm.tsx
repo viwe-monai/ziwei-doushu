@@ -166,6 +166,12 @@ export default function BirthForm({ onSubmit, loading, initialData, onFormSave, 
   const summaryBorder = isDark ? 'rgba(37,99,235,0.35)' : 'rgba(37,99,235,0.25)';
   const summaryClr = isDark ? 'rgba(147,197,253,0.9)' : 'rgba(37,99,235,0.85)';
 
+  // 选择日期下拉选项显式设置纯色背景 + 对比色文字（#14）：
+  // 原生下拉弹层会把半透明 inputBg 合成到默认白底上，浅色文字在弹层里几乎与背景同色。
+  // 纯色背景后对比度约 16:1（暗色 #e8eef8/#081028，亮色 #2a1a00/#fffcf0），满足 WCAG AA。
+  const optionBg = isDark ? 'rgba(8,16,40,1)' : 'rgba(255,252,240,1)';
+  const optionStyle = { background: optionBg, color: inputClr } as React.CSSProperties;
+
   const inputStyle = {
     background: inputBg,
     border: `1px solid ${inputBorder}`,
@@ -250,9 +256,9 @@ export default function BirthForm({ onSubmit, loading, initialData, onFormSave, 
               style={showErr('year') && errors.year ? errorInputStyle : inputStyle}
               required
             >
-              <option value="">年份</option>
+              <option value="" style={optionStyle}>年份</option>
               {Array.from({ length: 127 }, (_, i) => 2026 - i).map(yr => (
-                <option key={yr} value={String(yr)}>{yr}</option>
+                <option key={yr} value={String(yr)} style={optionStyle}>{yr}</option>
               ))}
             </select>
             <FieldError msg={showErr('year') ? errors.year : ''} />
@@ -264,9 +270,9 @@ export default function BirthForm({ onSubmit, loading, initialData, onFormSave, 
               style={showErr('month') && errors.month ? errorInputStyle : inputStyle}
               required
             >
-              <option value="">月份</option>
+              <option value="" style={optionStyle}>月份</option>
               {Array.from({ length: 12 }, (_, i) => i + 1).map(mo => (
-                <option key={mo} value={String(mo)}>{mo} 月</option>
+                <option key={mo} value={String(mo)} style={optionStyle}>{mo} 月</option>
               ))}
             </select>
             <FieldError msg={showErr('month') ? errors.month : ''} />
@@ -278,9 +284,9 @@ export default function BirthForm({ onSubmit, loading, initialData, onFormSave, 
               style={showErr('day') && errors.day ? errorInputStyle : inputStyle}
               required
             >
-              <option value="">日期</option>
+              <option value="" style={optionStyle}>日期</option>
               {Array.from({ length: 31 }, (_, i) => i + 1).map(dy => (
-                <option key={dy} value={String(dy)}>{dy} 日</option>
+                <option key={dy} value={String(dy)} style={optionStyle}>{dy} 日</option>
               ))}
             </select>
             <FieldError msg={showErr('day') ? errors.day : ''} />
